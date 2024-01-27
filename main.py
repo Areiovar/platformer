@@ -353,9 +353,6 @@ world_data = load_level(level_num)
 
 world = World(world_data)
 clock = pygame.time.Clock()
-pygame.mixer.music.load("img/music.mp3")
-pygame.mixer.music.set_volume(0.1)
-pygame.mixer.music.play(-1)
 
 run = True
 
