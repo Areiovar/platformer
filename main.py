@@ -1,12 +1,11 @@
-import pygame
-import time
+import pygame  
+import time    
 import datetime
-
-                                                      
-                                                      
-pygame.init()                                         
-LEVELS = {
-    1: [
+               
+               
+pygame.init()  
+LEVELS = {     
+    1: [       
         [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
         [2, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
@@ -20,7 +19,7 @@ LEVELS = {
         [0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 2, 0, 2, 2, 2],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 3, 0, 0, 1, 0, 0, 2, 0, 2, 2, 2],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 2, 2],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ],
     2: [
@@ -37,7 +36,7 @@ LEVELS = {
         [0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 4, 4, 1, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-        [2, 2, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+        [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 1, 1]
     ],
     3: [
@@ -237,12 +236,12 @@ class Player():
             direction_y += self.position_y
 
             def x_collision(tile, direction_x):
-                if tile[1].colliderect (self.rect.x + direction_x, self.rect.y, self.width, self.height):
+                if tile[1].colliderect(self.rect.x + direction_x, self.rect.y, self.width, self.height):
                     return 0
                 return direction_x
 
             def y_collision(tile, direction_y):
-                if tile[1].colliderect (self.rect.x, self.rect.y + direction_y, self.width, self.height):
+                if tile[1].colliderect(self.rect.x, self.rect.y + direction_y, self.width, self.height):
                     if self.position_y < 0:
                         direction_y = tile[1].bottom - self.rect.top
                         self.position_y = 0
@@ -255,8 +254,8 @@ class Player():
             self.in_air = True
 
             for tile in world.tile_list:
-                direction_x = x_collision (tile, direction_x)
-                direction_y = y_collision (tile, direction_y)
+                direction_x = x_collision(tile, direction_x)
+                direction_y = y_collision(tile, direction_y)
 
             if self.rect.left < 0:
                 self.rect.left = 0
@@ -353,7 +352,7 @@ world_data = load_level(level_num)
 
 world = World(world_data)
 clock = pygame.time.Clock()
-
+result_time = 0
 run = True
 
 while run:
@@ -366,14 +365,15 @@ while run:
             main_menu = False
 
     else:
-        world.draw ()
+        world.draw()
         lava_group.update(game_over)
         lava_group.draw(screen)
         exit_group.draw(screen)
 
         if level_num == 4:
             game_over_button.draw()
-            text = font.render(f'Время прохождения: {result_time} секунд', 1, BLACK)
+            text = font.render(
+                f'Время прохождения: {result_time} секунд', 1, BLACK)
             screen.blit(text, (150, 175))
 
         game_over = player.update(game_over)
@@ -393,7 +393,7 @@ while run:
                     end_game = True
                     result_time = round(time.time() - start_time, 2)
                 else:
-                    print ('Error')
+                    print('Error')
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -402,5 +402,6 @@ while run:
     pygame.display.flip()
     clock.tick(60)
 
-file_object.write(f'Время прохождения: {str(result_time)} секунд. Дата: {start_time_play} \n')
+file_object.write(
+    f'Время прохождения: {str(result_time)} секунд. Дата: {start_time_play} \n')
 file_object.close()
